@@ -22,7 +22,7 @@ input int      InpTimerInterval  = 10;           // Poll interval in Millisecond
 input int      InpMaxRetries     = 3;            // Max retries on execution failure
 
 //--- Global Variables
-Context *zmq_context = NULL;
+Context zmq_context;
 Socket  *zmq_socket  = NULL;
 
 //+------------------------------------------------------------------+
@@ -32,14 +32,7 @@ int OnInit()
 {
    Print("Initializing SignalReceiverEA_MT4...");
    
-   // Create ZMQ Context and Subscriber Socket
-   zmq_context = new Context();
-   if(zmq_context == NULL)
-   {
-      Print("Error: Failed to create ZMQ context.");
-      return INIT_FAILED;
-   }
-   
+   // Create ZMQ Subscriber Socket
    zmq_socket = new Socket(zmq_context, ZMQ_SUB);
    if(zmq_socket == NULL || !zmq_socket.valid())
    {
@@ -92,11 +85,7 @@ void OnDeinit(const int reason)
       zmq_socket = NULL;
    }
    
-   if(zmq_context != NULL)
-   {
-      delete zmq_context;
-      zmq_context = NULL;
-   }
+
    
    Print("SignalReceiverEA_MT4 cleaned up successfully.");
 }

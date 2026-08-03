@@ -18,7 +18,7 @@ input int      InpZmqPort        = 5555;         // ZeroMQ Port
 input long     InpMagicNumber    = 40000100;     // Filter by Magic Number
 
 //--- Global Variables
-Context *zmq_context = NULL;
+Context zmq_context;
 Socket  *zmq_socket  = NULL;
 
 //+------------------------------------------------------------------+
@@ -28,14 +28,7 @@ int OnInit()
 {
    Print("Initializing SignalSenderEA_MT5...");
    
-   // Create ZMQ Context and Publisher Socket
-   zmq_context = new Context();
-   if(zmq_context == NULL)
-   {
-      Print("Error: Failed to create ZMQ context.");
-      return INIT_FAILED;
-   }
-   
+   // Create ZMQ Publisher Socket
    zmq_socket = new Socket(zmq_context, ZMQ_PUB);
    if(zmq_socket == NULL || !zmq_socket.valid())
    {
@@ -71,11 +64,7 @@ void OnDeinit(const int reason)
       zmq_socket = NULL;
    }
    
-   if(zmq_context != NULL)
-   {
-      delete zmq_context;
-      zmq_context = NULL;
-   }
+
    
    Print("SignalSenderEA_MT5 cleaned up successfully.");
 }
