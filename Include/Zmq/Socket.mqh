@@ -124,7 +124,7 @@ int zmq_proxy_steerable(intptr_t frontend_ref,intptr_t backend_ref,intptr_t capt
 class Socket: public SocketOptions
   {
 public:
-                     Socket(Context &ctx,int type) { intptr_t cref = ctx.get_ref(); m_ref = zmq_socket(cref,type); }
+                     Socket(Context &ctx,int type);
    virtual          ~Socket() {if(0!=zmq_close(m_ref)){Debug(StringFormat("Failed to close socket 0x%0X",m_ref));}}
 
    // for better cooperation between objects
@@ -181,6 +181,12 @@ public:
   };
 //+------------------------------------------------------------------+
 //|                                                                  |
+//+------------------------------------------------------------------+
+Socket::Socket(Context &ctx,int type)
+  {
+   intptr_t cref = ctx.get_ref();
+   m_ref = zmq_socket(cref,type);
+  }
 //+------------------------------------------------------------------+
 bool Socket::bind(string addr)
   {
