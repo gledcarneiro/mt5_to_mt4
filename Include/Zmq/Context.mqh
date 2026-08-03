@@ -85,7 +85,7 @@ protected:
    bool              set(int option,int optval) {return 0==zmq_ctx_set(m_ref,option,optval);}
 
 public:
-   intptr_t          ref() const {return m_ref;}
+   intptr_t          get_ref() const {return m_ref;}
 
    static intptr_t   create() {return zmq_ctx_new();}
    static void       destroy(intptr_t handle) {if(0!=zmq_ctx_term(handle)) {Debug("failed to terminate context");}}

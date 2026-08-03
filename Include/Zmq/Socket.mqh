@@ -124,11 +124,11 @@ int zmq_proxy_steerable(intptr_t frontend_ref,intptr_t backend_ref,intptr_t capt
 class Socket: public SocketOptions
   {
 public:
-                     Socket(const Context &ctx,int type):SocketOptions(zmq_socket(ctx.ref(),type)){}
+                     Socket(const Context &ctx,int type):SocketOptions(zmq_socket(ctx.get_ref(),type)){}
    virtual          ~Socket() {if(0!=zmq_close(m_ref)){Debug(StringFormat("Failed to close socket 0x%0X",m_ref));}}
 
    // for better cooperation between objects
-   intptr_t          ref() const {return m_ref;}
+   intptr_t          get_ref() const {return m_ref;}
 
    bool              valid() const {return m_ref!=0;}
 
@@ -239,9 +239,9 @@ bool Socket::monitor(string addr,int events)
 //+------------------------------------------------------------------+
 bool Socket::proxy(Socket *frontend,Socket *backend,Socket *capture)
   {
-   intptr_t frontend_ref= CheckPointer(frontend)==POINTER_DYNAMIC?frontend.ref():0;
-   intptr_t backend_ref = CheckPointer(backend)==POINTER_DYNAMIC?backend.ref():0;
-   intptr_t capture_ref=CheckPointer(capture)==POINTER_DYNAMIC?capture.ref():0;
+   intptr_t frontend_ref= CheckPointer(frontend)==POINTER_DYNAMIC?frontend.get_ref():0;
+   intptr_t backend_ref = CheckPointer(backend)==POINTER_DYNAMIC?backend.get_ref():0;
+   intptr_t capture_ref=CheckPointer(capture)==POINTER_DYNAMIC?capture.get_ref():0;
    return 0==zmq_proxy(frontend_ref, backend_ref, capture_ref);
   }
 //+------------------------------------------------------------------+
@@ -249,10 +249,10 @@ bool Socket::proxy(Socket *frontend,Socket *backend,Socket *capture)
 //+------------------------------------------------------------------+
 bool Socket::proxySteerable(Socket *frontend,Socket *backend,Socket *capture,Socket *control)
   {
-   intptr_t frontend_ref= CheckPointer(frontend)==POINTER_DYNAMIC?frontend.ref():0;
-   intptr_t backend_ref = CheckPointer(backend)==POINTER_DYNAMIC?backend.ref():0;
-   intptr_t capture_ref=CheckPointer(capture)==POINTER_DYNAMIC?capture.ref():0;
-   intptr_t control_ref=CheckPointer(control)==POINTER_DYNAMIC?control.ref():0;
+   intptr_t frontend_ref= CheckPointer(frontend)==POINTER_DYNAMIC?frontend.get_ref():0;
+   intptr_t backend_ref = CheckPointer(backend)==POINTER_DYNAMIC?backend.get_ref():0;
+   intptr_t capture_ref=CheckPointer(capture)==POINTER_DYNAMIC?capture.get_ref():0;
+   intptr_t control_ref=CheckPointer(control)==POINTER_DYNAMIC?control.get_ref():0;
    return 0==zmq_proxy_steerable(frontend_ref, backend_ref, capture_ref, control_ref);
   }
 //+------------------------------------------------------------------+

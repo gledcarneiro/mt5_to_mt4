@@ -339,7 +339,7 @@ public:
       delete m_hm;
      }
 
-   T                 ref() const
+   T                 get_ref() const
      {
       return m_ref;
      }
