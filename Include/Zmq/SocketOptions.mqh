@@ -142,8 +142,9 @@ protected:
 
    bool              setStringOption(int option,string value,bool ending=true);
    bool              getStringOption(int option,string &value,size_t length=1024);
-                     SocketOptions(intptr_t ref=0):m_ref(ref){}
+                     
 public:
+                     SocketOptions(intptr_t ref=0):m_ref(ref){}
    //--- option templates
    //--- various integer options
 #define SOCKOPT_GET(TYPE, NAME, MACRO) \

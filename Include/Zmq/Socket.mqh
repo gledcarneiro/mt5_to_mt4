@@ -124,7 +124,7 @@ int zmq_proxy_steerable(intptr_t frontend_ref,intptr_t backend_ref,intptr_t capt
 class Socket: public SocketOptions
   {
 public:
-                     Socket(const Context &ctx,int type) { m_ref = zmq_socket(ctx.m_ref,type); }
+                     Socket(const Context &ctx,int type) { m_ref = zmq_socket(ctx.get_ref(),type); }
    virtual          ~Socket() {if(0!=zmq_close(m_ref)){Debug(StringFormat("Failed to close socket 0x%0X",m_ref));}}
 
    // for better cooperation between objects
