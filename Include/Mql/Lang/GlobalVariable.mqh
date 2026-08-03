@@ -282,8 +282,9 @@ private:
    CriticalSection   m_cs;
    string            m_refName;
    string            m_counterName;
-protected:
+public:
    T                 m_ref;
+protected:
    HandleManager<T>  *m_hm;
 public:
                      GlobalHandle(string sharedKey=NULL):m_cs(sharedKey)
