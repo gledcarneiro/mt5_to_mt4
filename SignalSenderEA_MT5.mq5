@@ -19,7 +19,7 @@ input long     InpMagicNumber    = 40000100;     // Filter by Magic Number
 
 //--- Global Variables
 Context zmq_context;
-Socket  *zmq_socket  = NULL;
+Socket  *g_pub_socket = NULL;
 
 //+------------------------------------------------------------------+
 //| Expert initialization function                                   |
@@ -29,8 +29,8 @@ int OnInit()
    Print("Initializing SignalSenderEA_MT5...");
    
    // Create ZMQ Publisher Socket
-   zmq_socket = new Socket(zmq_context, ZMQ_PUB);
-   if(zmq_socket == NULL || !zmq_socket.valid())
+   g_pub_socket = new Socket(zmq_context, ZMQ_PUB);
+   if(g_pub_socket == NULL || !g_pub_socket.valid())
    {
       Print("Error: Failed to create ZMQ PUB socket.");
       return INIT_FAILED;
@@ -40,7 +40,7 @@ int OnInit()
    string bind_addr = "tcp://" + InpZmqHost + ":" + IntegerToString(InpZmqPort);
    Print("Binding ZMQ socket to: ", bind_addr);
    
-   if(!zmq_socket.bind(bind_addr))
+   if(!g_pub_socket.bind(bind_addr))
    {
       Print("Error: Failed to bind ZMQ socket to ", bind_addr);
       return INIT_FAILED;
@@ -58,10 +58,10 @@ void OnDeinit(const int reason)
    Print("Deinitializing SignalSenderEA_MT5. Reason code: ", reason);
    
    // Clean up socket and context
-   if(zmq_socket != NULL)
+   if(g_pub_socket != NULL)
    {
-      delete zmq_socket;
-      zmq_socket = NULL;
+      delete g_pub_socket;
+      g_pub_socket = NULL;
    }
    
 
@@ -181,10 +181,10 @@ bool HasRemainingPositions(string symbol, long magic)
 //+------------------------------------------------------------------+
 void SendSignal(string payload)
 {
-   if(zmq_socket != NULL && zmq_socket.valid())
+   if(g_pub_socket != NULL && g_pub_socket.valid())
    {
       // Send message in non-blocking mode to prevent terminal freezing
-      if(zmq_socket.send(payload, true))
+      if(g_pub_socket.send(payload, true))
       {
          Print("ZMQ Published Signal: ", payload);
       }

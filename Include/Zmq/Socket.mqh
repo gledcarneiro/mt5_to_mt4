@@ -126,8 +126,8 @@ class Socket: public SocketOptions
 public:
                      Socket(Context &ctx,int sock_type)
      {
-      intptr_t cref = ctx.get_ref();
-      m_ref = ::zmq_socket(cref,sock_type);
+      intptr_t cref=ctx.get_ref();
+      m_ref=::zmq_socket(cref,sock_type);
      }
    virtual          ~Socket() {if(0!=zmq_close(m_ref)){Debug(StringFormat("Failed to close socket 0x%0X",m_ref));}}
 

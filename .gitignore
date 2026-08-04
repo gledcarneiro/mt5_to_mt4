@@ -1,0 +1,7 @@
+# Ignore installers and temporary logs
+*.exe
+*.log
+*.ex4
+*.ex5
+*.pyc
+.venv
