@@ -1,6 +1,6 @@
 # MT5 to MT4 Bridge (ZeroMQ RAM Protocol)
 
-Sincronização de sinais de trading de alta frequência e ultra-baixa latência entre os terminais **MetaTrader 5** e **MetaTrader 4 (Conta Cent/Padrão)** utilizando comunicação direta em memória via **Sockets TCP Locais (ZeroMQ)**.
+Sincronização de sinais de trading de alta frequência e ultra-baixa latência entre os terminais **MetaTrader 5** e **MetaTrader 4 (Conta Padrão)** utilizando comunicação direta em memória via **Sockets TCP Locais (ZeroMQ)**.
 
 ---
 
@@ -8,13 +8,13 @@ Sincronização de sinais de trading de alta frequência e ultra-baixa latência
 
 Esta versão da ponte elimina completamente o gargalo de **File I/O (I/O de Disco)**. Toda a inteligência da estratégia, execução do modelo Keras V4 e decisões do Trailing Stop permanecem concentradas no motor **Python no MT5**. 
 
-O **MT4** atua como um executor passivo de ordens a mercado na conta Cent, recebendo instruções em tempo real via **RAM Sockets** sem concorrência de arquivos no sistema.
+O **MT4** atua como um executor passivo de ordens a mercado na conta MT4, recebendo instruções em tempo real via **RAM Sockets** sem concorrência de arquivos no sistema.
 
 ```
 +------------------------+          +--------------------------+          +--------------------------+
 |  V4 Python Engine      |  MQL5    |  SignalSenderEA (MT5)    |  ZeroMQ  |  SignalReceiverEA (MT4)  |
 |  (Keras V4 + Dynamic)  | -------->|  ZeroMQ Publisher (PUB)  | -------->|  ZeroMQ Subscriber (SUB) |
-|  - MT5 Execution       |          |  tcp://127.0.0.1:5555    |   RAM    |  - Cent Account Execution|
+|  - MT5 Execution       |          |  tcp://127.0.0.1:5555    |   RAM    |  - MT4 Account Execution|
 +------------------------+          +--------------------------+          +--------------------------+
 ```
 
@@ -62,7 +62,7 @@ Abra o MT5 $\rightarrow$ `Arquivo` $\rightarrow$ `Abrir Pasta de Dados` $\righta
 * **Pastas da diretório `Include/`** (`Zmq` e `Mql`) $\rightarrow$ Cole em `MQL5/Include/`
 * **`libzmq.dll` e `libsodium.dll`** (da pasta `Library/MT5/`) $\rightarrow$ Cole em `MQL5/Libraries/`
 
-### 2. No MetaTrader 4 (Receptor Cent / Subscriber)
+### 2. No MetaTrader 4 (Receptor / Subscriber)
 
 Abra o MT4 $\rightarrow$ `Arquivo` $\rightarrow$ `Abrir Pasta de Dados` $\rightarrow$ entre em `MQL4`:
 
